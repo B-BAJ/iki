@@ -83,7 +83,7 @@
 
         #cropper-container {
             display: none;
-            margin: 20px;
+           /* margin: 20px;*/
         }
 
         #cropper-container img {
@@ -191,7 +191,8 @@
     </div>
 
     <!-- Cropper.js Script -->
-    <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
     <script>
   
 
@@ -267,7 +268,7 @@ window.onload = handleProfileCheck;
     });
 
     // Handle profile picture upload
-
+/* 
     profilePictureInput.addEventListener("change", async (event) => {
     const file = event.target.files[0];
 
@@ -291,7 +292,7 @@ window.onload = handleProfileCheck;
     }
 
     // Now proceed with FileReader or createObjectURL
-    const objectURL = URL.createObjectURL(file);
+   const objectURL = URL.createObjectURL(file);
     const image = new Image();
     image.src = objectURL;
 
@@ -319,11 +320,18 @@ window.onload = handleProfileCheck;
         URL.revokeObjectURL(objectURL);
     };
 });
-
+*/
     
     // Handle profile picture upload
-   /*profilePictureInput.addEventListener("change", (event) => {
+   profilePictureInput.addEventListener("change", (event) => {
     const file = event.target.files[0];
+
+    if (!file) return;
+    if (file.type === "image/heic" || file.type === "image/heif"){
+        alert("Failed to convert HEIC image. Please choose another image in  JPEG or PNG. or try resizing the image");
+            
+    }
+
     if (file) {
         const reader = new FileReader();
         reader.onload = async() => {
@@ -360,10 +368,11 @@ window.onload = handleProfileCheck;
         };
         reader.readAsDataURL(file);
     }
-}); */
+}); 
 
    /* profilePictureInput.addEventListener("change", (event) => {
     const file = event.target.files[0];
+
     if (file) {
         const reader = new FileReader();
         reader.onload = () => {
