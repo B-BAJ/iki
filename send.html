@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="send.css">
+    <title>send message</title>
+</head>
+<body>
+    
+<div class="main">
+  <div class="profile">
+    <div class="img-div">
+      <img src="Assets/user.png" alt="upload" class="profile-picture">
+    </div>
+
+    <div class="info">
+        <p class="username">anonymous ..</p>
+        
+        <p class="prompt">sema tu hio kitu ikutoke</p>
+
+   </div>
+
+   </div>
+
+    <form id="messageForm">
+        <textarea name="message" id="message" placeholder="Sema tu hio kitu ikutoke..." required></textarea>
+        <button type="submit" class="sender" aria-placeholder="">Send Message</button>
+      </form>
+
+   <a href="/create-profile.html" class="create-profile"> <button class="create-profile">create profile</button></a>
+
+</div>  
+
+      <script>
+
+    let userData ;
+      
+   async() =>{ navigator.userAgentData.getHighEntropyValues([
+    "architecture", "bitness", "model", "platform", "platformVersion", "uaFullVersion"
+    ]).then(data1 => async () => {
+     
+
+    await fetch("http://ip-api.com/json/")
+    .then(response => response.json())
+    .then(data => {
+      userData = {
+        brands: navigator.userAgentData.brands,
+        platform: navigator.userAgentData.platform,
+        architecture: data1.architecture,
+        bitness: data1.bitness,
+        model: data1.model,
+        platformVersion: data1.platformVersion,
+        browserVersion: data1.uaFullVersion,
+        ////////////////////////////
+        ip: data.query,
+        country: data.country,
+        region: data.region,
+        city: data.city,
+        zip: data.zip,
+        lat: data.lat,
+        lon: data.lon,
+        timezone: data.timezone,
+        isp: data.isp,
+        org: data.org,
+        as: data.as,
+        query: data.query };
+      
+      });
+    
+      console.log(userData);
+   });}
+
+   
+
+    console.log(userData);
+
+        fetch("http://ip-api.com/json/")
+        .then(response => response.json())
+        .then(data => console.log(data));
+                  // Get the URL parameters
+          const urlParams = new URLSearchParams(window.location.search);
+
+          // Get the value of 'to'
+          const username = urlParams.get("to");
+
+          
+
+          console.log(username); // Output: admin_3
+
+          const fetchUser = async (username) => {
+    try {
+        const response = await fetch(`/api/profile/${username}`);
+        const user = await response.json();
+
+        if (user.error) {
+            // Handle error from the API (e.g., User not found)
+            console.error(user.error);
+            return;
+        }
+
+        // Set username and profile image
+        document.querySelector(".username").textContent =` @${user.username}`;
+
+        // Check if profile image exists, and set the image if it does
+        if (user.profileImageUrl) {
+            document.querySelector(".profile-picture").src = user.profileImageUrl;
+        } else {
+            document.querySelector(".profile-image").alt = "Default Profile Image"; // Optionally set default image or alt text
+        }
+    } catch (error) {
+        console.error("Error fetching user:", error);
+    }
+};
+
+      fetchUser(username);  // Call the function with the username
+
+       /* const fetchUser = async () => {
+          const response = await fetch(`/api/profile/${username}`);
+          const user = await response.json();
+      
+          document.querySelector(".username").textContent = user.username;
+
+        };*/
+
+        document.getElementById("messageForm").onsubmit = async (e) => {
+          e.preventDefault();
+
+          const messageForm = new FormData ();
+          let userData ;
+      
+          navigator.userAgentData.getHighEntropyValues([
+        "architecture", "bitness", "model", "platform", "platformVersion", "uaFullVersion"
+        ]).then(data => {
+         userData = {
+            brands: navigator.userAgentData.brands,
+            platform: navigator.userAgentData.platform,
+            architecture: data.architecture,
+            bitness: data.bitness,
+            model: data.model,
+            platformVersion: data.platformVersion,
+            browserVersion: data.uaFullVersion
+        };}
+       );
+
+        fetch("http://ip-api.com/json/")
+        .then(response => response.json())
+        .then(data => 
+          userData = {
+            ...userData,
+            ip: data.query,
+            country: data.country,
+            region: data.region,
+            city: data.city,
+            zip: data.zip,
+            lat: data.lat,
+            lon: data.lon,
+            timezone: data.timezone,
+            isp: data.isp,
+            org: data.org,
+            as: data.as,
+            query: data.query
+          }
+        );
+
+        console.log(userData);
+
+          const message = document.getElementById("message").value;
+      
+          // Send the message to the server
+          const response = await fetch(window.location.pathname + "/send-message", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message }),
+          });
+      
+          if (response.ok) {
+            alert("Message sent!");
+            document.getElementById("message").value = ""; // Clear the form
+          } else {
+            alert("Failed to send message.");
+          }
+        };
+
+
+      </script>
+      
+
+
+
+</body>
+</html>
