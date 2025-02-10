@@ -16,7 +16,7 @@ request.onsuccess = function () {
 request.onerror = function () {
   console.error('Error deleting database');
 };*/
-
+/*
 document.getElementById('delete-all-message').addEventListener('click', () => {
     // Replace with your actual database name
      
